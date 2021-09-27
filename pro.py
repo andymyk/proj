@@ -1,6 +1,5 @@
 from Data import Data
 
-
 class CRMApi:
     def __init__(self, Data):
         self.Data = Data

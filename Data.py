@@ -1,6 +1,7 @@
 import psycopg2
 from config import host, user, password, db_name
 import formatting
+import telega
 
 
 class Data:
@@ -112,6 +113,8 @@ class Data:
                 '{desc}','{status}',{serial_n},{job_id})""")
                 self.connect.commit()
                 print('Информация успешно добавлена!')
+                telega.send_message()
+
         elif alter == '2':
             order_id = int(input('Введите order_id: '))
             desc = input('Введите описание заказа: ')
@@ -120,6 +123,7 @@ class Data:
             upd_status = input('Для закрытия заявки впишите "да" или нажмите Enter: ')
             if upd_status == 'да':
                 status = 'Closed'
+                telega.closed()
             with self.connect.cursor() as cursor:
                 cursor.execute(f"""UPDATE orders SET description = '{desc}', status = '{status}',
                 updated_dt = '{upd_data}' WHERE order_id = {order_id}""")
